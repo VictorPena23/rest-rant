@@ -2,6 +2,13 @@ h1 {
     text-align: center;
     color: olive;
     font-family: 'Times New Roman', Times, serif;
+ }
 
-  }
-  
+img {
+    text-align: center;
+    position: relative;
+    width: 500px;
+    height: 500px;
+    display: flex;
+    justify-content: center;
+}
