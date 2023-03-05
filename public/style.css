@@ -12,3 +12,35 @@ img {
     display: flex;
     justify-content: center;
 }
+
+nav {
+    background-color: olive;
+    padding: 10px;
+}
+
+nav li {
+    display: inline;
+    margin-right: 25px;
+}
+
+nav a {
+    color: bisque;
+    font-size: 1.5em;
+}
+
+nav a:hover {
+    color: pink;
+    text-decoration: none;
+}
+
+body {
+    background-color: lightblue;
+    text-align: center;
+  }
+  
+  main {
+    margin-right: 20px;
+    margin-left: 20px;
+    background-color: white;
+  }
+  
