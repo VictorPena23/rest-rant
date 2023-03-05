@@ -1,8 +1,9 @@
 const router = require('express').Router();
+const placesModel = require('../models/places.js')
 
 // GET /places
 router.get('/', (req, res) => {
-  let places = [{
+  let placesArr = [{
     name: 'H-Thai-ML',
     city: 'Seattle',
     state: 'WA',
@@ -16,7 +17,7 @@ router.get('/', (req, res) => {
     pic: 'https://www.orlandocatcafe.com/wp-content/uploads/2022/07/orlando-cat-cafe-interior.jpg'
   }];
 
-  res.render('places/index', { places });
+  res.render('places/index', { places: placesArr });
 });
 
 // GET /places/new
@@ -26,8 +27,18 @@ router.get('/new', (req, res) => {
 
 // POST /places
 router.post('/', (req, res) => {
-  console.log(req.body);
-  res.send('POST /places');
-});
+  if (!req.body.pic) {
+    // Default image if one is not provided
+    req.body.pic = 'http://placekitten.com/400/400'
+  }
+  if (!req.body.city) {
+    req.body.city = 'Anytown'
+  }
+  if (!req.body.state) {
+    req.body.state = 'USA'
+  }
+  placesModel.push(req.body)
+  res.redirect('/places')
+})
 
 module.exports = router;
