@@ -1,178 +1,109 @@
-const React = require('react')
-const Def = require('../default')
+const React = require("react");
+const Def = require("../default");
 
-
-
-function show (data) {
-    let comments = (
-      <h6 className="inactive">
-        No comments yet!
-      </h6>
-    )
-    let rating = (
-      <h6 className="inactive">
-        Not yet rated
-      </h6>
-    )
-    if (data.place.comments.length) {
+function show(data) {
+  let comments = <h3>No comments yet!</h3>;
+  let rating = <h3>Not yet rated</h3>;
+  if (data.place.comments.length) {
+    comments = data.place.comments.map((c) => {
       let sumRatings = data.place.comments.reduce((tot, c) => {
-        return tot + c.stars
-      }, 0)
-      let averageRating = Math.round(sumRatings / data.place.comments.length )
-      let stars = ''
-      for (let i=0; i < averageRating; i++) {
-        stars += '⭐️'
-        //
+        return tot + c.stars;
+      }, 0);
+      let averageRating = Math.round(sumRatings / data.place.comments.length);
+      let stars = "";
+      for (let i = 0; 1 < averageRating; i++) {
+        stars = +"⭐️";
       }
-      rating = (
-        <h3>
-          {stars} stars
-        </h3>
-      )
-      comments = data.place.comments.map(c => {
-        return (
-          <div className="border">
-            <h2 className="rant">{c.rant ? 'Rant! 😒' : 'Rave! 😎'}</h2>
-            <h4>{c.content}</h4>
+      rating = <h3>{stars} stars</h3>;
+      return (
+        <div className="border">
+          <h2 className="rant">{c.rant ? "Rant! ðŸ˜¡" : "Rave! ðŸ˜»"}</h2>
+          <h4>{c.content}</h4>
+          <h3>
+            <stong>- {c.author}</stong>
+          </h3>
+          <h4>Rating: {c.stars}</h4>
+        </div>
+      );
+    });
+  }
+  return (
+    <Def>
+      <main>
+        <div className="row">
+          <div className="col-sm-6">
+            <img src={data.place.pic} alt={data.place.name} />
             <h3>
-              <strong>- {c.author}</strong>
+              Located in {data.place.city}, {data.place.state}
             </h3>
-            <h4>Rating: {c.stars}</h4>
-            <form
-              method="POST"
-              action={`/places/${data.place.id}/comment/${c.id}?_method=DELETE`}
-					  >
-						<input
-							type="submit"
-							className="btn btn-danger"
-							value="Delete Comment"
-						/>
-					</form>
           </div>
-        )
-      })
-    }
-    return (
-        <Def>
-          <main>
-            <div className="row">
-              <div className="col-sm-6">
-                <img className="showImg"
-                  src={data.place.pic}
-                  alt={data.place.name}
-                />
-                  <h3>
-                  Located in {data.place.city}, {data.place.state}
-                </h3>
-              </div>
-              <div className="col-sm-6">
-                <h1>{data.place.name}</h1>
-                <h2>Rating</h2>
-                {rating}
-                {/* <p>Currently Unrated</p> */}
-                <h2>Description</h2>
-                <h6>
-                  {data.place.showEstablished()}
-                </h6>
-                <h4>
-                  Serving {data.place.cuisines}
-                </h4>
-                <div>
-                  {/* EDIT BUTTON */}
-                    {/*My edit button isn't working; when I click it, I get an error "Cannot PUT /places/undefined" and I'm not sure why? */}
-                  <a
-                    href={`/places/${data.place.id}/edit`}
-                    className="btn btn-warning"
-                  >
-                    Edit
-                  </a>
-                </div>
-                <div>
-                  {/* DELETE BUTTON */}
-                  <form
-                    method="POST"
-                    action={`/places/${data.place.id}?_method=DELETE`}
-                  >
-                    <button
-                      type="submit"
-                      className="btn btn-danger"
-                    >
-                      Delete
-                    </button>
-                  </form>
-                </div>
-              </div>
-            </div>
-            <div>
-              <h2>Comments</h2>
-              {comments}
-            </div>
-            <h2>Want to add your own Rave or Rant?</h2>
-            <form
-              // POST COMMENT METHOD
-              method="POST"
-              action={`/places/${data.place.id}/comment`}
+          <div className="col-sm-6">
+            <h1>{data.place.name}</h1>
+            <h2>Rating:</h2>
+            {rating}
+            <h2>Description</h2>
+            <h3>{data.place.showEstablished()}</h3>
+            <h4>Serving {data.place.cuisines}</h4>
+            <a
+              href={`/places/${data.place._id}/edit`}
+              className="btn btn-warning"
             >
-              <div className="row">
-                <div className="form-group col-sm-12">
-                  <label htmlFor="content">Your comment here</label>
-                  <textarea
-                    id="content"
-                    name="content"
-                    className="form-control text-center"
-                  ></textarea>
-                </div>
-              </div>
-              <br />
-              <div className="row">
-                <div className="form-group col-sm-5">
-                  <label htmlFor="author">Author</label>
-                  <input
-                    id="author"
-                    name="author"
-                    className="form-control text-center"
-                  />
-                </div>
-                <div className="form-group col-sm-5">
-                  <label htmlFor="stars">Star Rating</label>
-                  <input
-                    type="range"
-                    step="0.5"
-                    min="1"
-                    max="5"
-                    id="stars"
-                    name="stars"
-                    className="form-range"
-                  />
-                </div>
-                <div className="form-group col-sm-2">
-                  <label
-                    htmlFor="rant"
-                    className="form-check-label"
-                    for="rant"
-                  >
-                    Rant?
-                  </label>
-                  <br />
-                  <input
-                    className="form-check-input"
-                    type="checkbox"
-                    id="rant"
-                    name="rant"
-                    value="yes"
-                  />
-                </div>
-              </div>
-              <br />
-              <input
-                type="submit"
-                className="btn btn-primary"
-                value="Add Comment"
-              />
+              Edit
+            </a>
+            <form
+              method="POST"
+              action={`/places/${data.place._id}?_method=DELETE`}
+            >
+              <button type="submit" className="btn btn-danger">
+                Delete
+              </button>
             </form>
-          </main>
-        </Def>
-    )
+          </div>
+        </div>
+        <hr />
+        <h2>Comments</h2>
+        <form method="POST" action={`/places/${data.place._id}/comment`}>
+          <div className="form-group">
+            <label htmlFor="author">Author: </label>
+            <input className="form-control" type="text" name="author" />
+          </div>
+          <div className="form-group">
+            <label htmlFor="content">comment:</label>
+            <input
+              type="text-area"
+              className="form-control"
+              id="content"
+              name="content"
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="stars">rating: (0-5)</label>
+            <input
+              type="range"
+              className="form-control"
+              id="stars"
+              name="stars"
+              step="0.5"
+              min="0"
+              max="5"
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="rant">Rant </label>
+            <input type="checkbox" name="rant" value="rant" />
+          </div>
+
+          <button type="submit" className="btn btn-primary">
+            Submit
+          </button>
+        </form>
+        {comments}
+      </main>
+    </Def>
+  );
 }
 
-module.exports = show
+module.exports = show;
+
+let rating = <h3 className="inactive">Not yet rated</h3>;
