@@ -1,11 +1,18 @@
 const React = require("react");
 const Def = require("../default");
 
-function newForm() {
+function newForm(data) {
   return (
     <Def>
       <main>
         <h1>Add a New Place</h1>
+
+        {data.errorMsg && (
+          <div className="alert alert-danger" role="alert">
+            {data.errorMsg}
+          </div>
+        )}
+
         <form method="POST" action="/places">
           <div className="form-group">
             <label htmlFor="name">Place Name</label>
@@ -38,7 +45,11 @@ function newForm() {
               className="form-control"
               id="founded"
               name="founded"
-              defaultValue={new Date().getFullYear()} // Changed to defaultValue
+              type="number"
+              min="1673"
+              max={new Date().getFullYear()}
+              defaultValue={new Date().getFullYear()}
+              required
             />
           </div>
 

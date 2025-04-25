@@ -15,18 +15,21 @@ router.get("/", (req, res) => {
 
 // CREATE
 router.post("/", (req, res) => {
-  // If 'pic' is empty, let Mongoose apply the default image
-  if (!req.body.pic) {
-    req.body.pic = undefined;
-  }
-
   db.Place.create(req.body)
     .then(() => {
       res.redirect("/places");
     })
     .catch((err) => {
-      console.log("err", err);
-      res.render("error404");
+      console.log("Validation error:", err);
+
+      if (err && err.name === "ValidationError") {
+        // Use your custom message instead of parsing individual fields
+        const message = "Oops, seems to be a time error";
+
+        res.render("places/new", { errorMsg: message });
+      } else {
+        res.render("error404");
+      }
     });
 });
 
