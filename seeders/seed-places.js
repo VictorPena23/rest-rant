@@ -1,28 +1,30 @@
-//Purpose of a seeder file: to provide sample data in a database (for good app demonstration)
+// Purpose of a seeder file: to provide sample data in a database (for good app demonstration)
 const db = require('../models')
 
-//Use Mongoose's create() method to create a new place. (If we pass it an array, it will create multiple places at once)
-db.Place.create([{
+// Use Mongoose's create() method to create multiple places at once
+db.Place.create([
+  {
     name: 'H-Thai-ML',
     city: 'Seattle',
     state: 'WA',
     cuisines: 'Thai, Pan-Asian',
-    pic: './public/images/thai-food.jpg',
+    pic: 'https://placekitten.com/500/500',
     founded: 1989
-}, {
+  },
+  {
     name: 'Coding Cat Cafe',
     city: 'Phoenix',
     state: 'AZ',
     cuisines: 'Coffee, Bakery',
-    pic: './public/images/coffee-creamer.jpg',
+    pic: 'https://placekitten.com/600/400',
     founded: 2020
-}])
-.then( () => {
-    console.log('Success!')
-        //call the process.exit() method to let the file know when  the process can be closed so it doesn't just hang open like a web server
-    process.exit()
-})
-.catch(err => {
-    console.log('Failure!', err)
-    process.exit()
-})
+  }
+])
+  .then(() => {
+    console.log('Seed data added successfully! ✅');
+    process.exit();
+  })
+  .catch(err => {
+    console.log('Seeding failed! ❌', err);
+    process.exit();
+  });
